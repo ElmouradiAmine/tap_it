@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tap_it/pages/one_player_page.dart';
 
 class MenuPage extends StatelessWidget {
   Widget customButton(String text, Color color, Function function) {
@@ -27,14 +28,21 @@ class MenuPage extends StatelessWidget {
             padding: const EdgeInsets.all(32.0),
             child: Column(
               children: <Widget>[
+                SizedBox(
+                  height: height/16,
+                ),
                 FlutterLogo(
                   size: 200,
                 ),
-                Text("Check how fast you can type !"),
+                Text("Check how fast you can tap !"),
                 SizedBox(
                   height: height/8,
                 ),
-                customButton("1 player", Colors.green, () {}),
+                customButton("1 player", Colors.green, () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => OnePlayerPage(),
+                  ));
+                }),
                 SizedBox(
                   height: height/20,
                 ),
