@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tap_it/pages/one_player_page.dart';
+import 'package:tap_it/pages/two_player_page.dart';
 
 class MenuPage extends StatelessWidget {
   Widget customButton(String text, Color color, Function function) {
@@ -46,7 +47,12 @@ class MenuPage extends StatelessWidget {
                 SizedBox(
                   height: height/20,
                 ),
-                customButton("2 player", Colors.red, () {}),
+                customButton("2 player", Colors.red, () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => TwoPlayerPage(),
+                  ));
+
+                }),
               ],
             ),
           ),

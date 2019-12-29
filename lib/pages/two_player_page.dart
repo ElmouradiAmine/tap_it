@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-class OnePlayerPage extends StatefulWidget {
+class TwoPlayerPage extends StatefulWidget {
   @override
-  _OnePlayerPageState createState() => _OnePlayerPageState();
+  _TwoPlayerPageState createState() => _TwoPlayerPageState();
 }
 
-class _OnePlayerPageState extends State<OnePlayerPage> {
+class _TwoPlayerPageState extends State<TwoPlayerPage> {
   Timer _timer;
-  int _start = 5;
+  int _start = 30;
   bool playing = false;
 
-  int _score = 0;
+  int _score1 = 0;
+  int _score2 = 0;
+
 
   void startTimer() {
     playing = true;
     const oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(
       oneSec,
-      (Timer timer) => setState(
-        () {
+          (Timer timer) => setState(
+            () {
           if (_start < 1) {
-            messagePopUp();
             timer.cancel();
+            messagePopUp();
           } else {
             _start = _start - 1;
           }
@@ -57,8 +59,14 @@ class _OnePlayerPageState extends State<OnePlayerPage> {
                   ),
                   Row(
                     children: <Widget>[
-                      Icon(Icons.star),
-                      Text("$_score"),
+                      Icon(Icons.star,color: Colors.red,),
+                      Text("$_score1"),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Icon(Icons.star,color: Colors.green,),
+                      Text("$_score2"),
                     ],
                   ),
                 ],
@@ -68,13 +76,58 @@ class _OnePlayerPageState extends State<OnePlayerPage> {
                   onTap: () {
                     setState(() {
                       if (playing)
-                        _score++;
+                        _score1++;
+
                       else
                         startTimer();
+
+                      if (_score1 - _score2 >= 20){
+                        _timer.cancel();
+                        messagePopUp();
+                      }
                     });
                   },
                   child: FlutterLogo(
-                    size: 300,
+                    size: 150,
+                  ),
+                ),
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 20 - _score2 + _score1,
+                    child: Container(
+                      height: 20,
+                      color: Colors.red,
+                    ),
+                  ),
+                  Expanded(
+                    flex : 20 + _score2 - _score1,
+                    child: Container(
+                      height: 20,
+                      color: Colors.green,
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (playing)
+                        _score2++;
+
+                      else
+                        startTimer();
+
+                      if (_score2 - _score1 >= 20){
+                        _timer.cancel();
+                        messagePopUp();
+                      }
+                    });
+                  },
+                  child: FlutterLogo(
+                    size: 150,
                   ),
                 ),
               ),
@@ -110,8 +163,9 @@ class _OnePlayerPageState extends State<OnePlayerPage> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Score : $_score'),
-                Text('You did great!'),
+                Text('Player 1 : $_score1'),
+                Text('Player 2 : $_score2'),
+                Text(_score2 > _score1 ? "Player 2 wins." : (_score2 == _score1 ?  "It's a draw." : "Player 1 wins.")),
               ],
             ),
           ),
@@ -143,8 +197,9 @@ class _OnePlayerPageState extends State<OnePlayerPage> {
 
   void _replay() {
     setState(() {
-      _start = 5;
-      _score = 0;
+      _start = 30;
+      _score1 = 0;
+      _score2 = 0;
       playing = false;
     });
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tap_it/pages/menu_page.dart';
-import 'pages/one_player_page.dart';
+import 'pages/two_player_page.dart';
 
 void main() => runApp(MyApp());
 
