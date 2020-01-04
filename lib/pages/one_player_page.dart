@@ -2,7 +2,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const alarmAudioPath = "Pikachu.mp3";
@@ -25,18 +25,21 @@ class _OnePlayerPageState extends State<OnePlayerPage>
   Animation<double> animation2;
 
   Timer _timer;
-  int _start = 20;
+  int _start = 3;
   bool playing = false;
 
   int _score = 0;
 
   double _height = 350;
   Color colorTimer = Colors.black;
+  SharedPreferences prefs;
+  int myInt;
 
   static AudioCache player = new AudioCache();
 
   initState() {
     super.initState();
+    getPrefs();
     controller = AnimationController(
         duration: const Duration(milliseconds: 800), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
@@ -68,6 +71,11 @@ class _OnePlayerPageState extends State<OnePlayerPage>
 //this will start the animation
   }
 
+  void getPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    myInt = prefs.getInt('highscore') ?? 0;
+  }
+
   void startTimer() {
     playing = true;
     const oneSec = const Duration(seconds: 1);
@@ -77,16 +85,21 @@ class _OnePlayerPageState extends State<OnePlayerPage>
         () {
           if (_start < 1) {
             messagePopUp();
+            if (myInt < _score){
+              prefs.setInt('highscore', _score);
+            }
+
+            print(myInt);
+            print(_score);
             timer.cancel();
+
+
           } else {
             _start = _start - 1;
           }
 
-          if (_start <= 10){
-            setState(() {
-              colorTimer = Colors.red;
-            });
-          }
+
+
         },
       ),
     );
@@ -127,13 +140,9 @@ class _OnePlayerPageState extends State<OnePlayerPage>
                           width: 10,
                         ),
                         Text("$_start",
-
-
                             style: GoogleFonts.adventPro(
                               fontSize: 21,
                               fontWeight: FontWeight.bold,
-
-
                             )),
                       ],
                     ),
@@ -167,7 +176,7 @@ class _OnePlayerPageState extends State<OnePlayerPage>
                   scale: animation1,
                   child: GestureDetector(
                     onTap: () {
-                      player.play(alarmAudioPath);
+                      //player.play(alarmAudioPath);
                       setState(() {
 
                         if (playing) {
@@ -199,7 +208,7 @@ class _OnePlayerPageState extends State<OnePlayerPage>
                           color: Colors.white,
                         ),
                         onPressed: (){
-                          Navigator.of(context).popUntil(ModalRoute.withName("/"));
+                          Navigator.of(context).pushReplacementNamed("/");
                         },
                       )),
                     Opacity(
@@ -229,7 +238,6 @@ class _OnePlayerPageState extends State<OnePlayerPage>
                           ),
                           onPressed: (){
                             _timer.cancel();
-
                             _replay();
                           },
                         )),
@@ -269,22 +277,13 @@ class _OnePlayerPageState extends State<OnePlayerPage>
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text('Replay'),
-              color: Colors.green,
-              onPressed: () {
-                if (canClick) {
-
-                  _replay();
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
-            FlatButton(
-              child: Text('Menu'),
+              child: Text('Close'),
               color: Colors.red,
               onPressed: () {
                 if (canClick) {
-                  Navigator.of(context).popUntil(ModalRoute.withName("/"));
+                  _replay();
+                  Navigator.of(context).pop();
+
                 }
               },
             ),

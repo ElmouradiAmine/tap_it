@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:tap_it/pages/one_player_page.dart';
 import 'package:tap_it/pages/two_player_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuPage extends StatefulWidget {
+
+
+
+
   @override
   _MenuPageState createState() => _MenuPageState();
 }
@@ -11,9 +16,12 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> with TickerProviderStateMixin {
   AnimationController controller;
   Animation<double> animation;
+  int myInt;
+  SharedPreferences prefs;
 
-  initState() {
+  initState()  {
     super.initState();
+    getPrefs();
     controller = AnimationController(
         duration: const Duration(milliseconds: 800), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
@@ -27,6 +35,14 @@ class _MenuPageState extends State<MenuPage> with TickerProviderStateMixin {
     });
 //this will start the animation
     controller.forward();
+  }
+
+  void getPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    myInt = prefs.getInt('highscore') ?? 0;
+
+    setState(() {
+    });
   }
 
   Widget customButton(String text, Color color, Function function) {
@@ -48,6 +64,7 @@ class _MenuPageState extends State<MenuPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    getPrefs();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -95,10 +112,30 @@ class _MenuPageState extends State<MenuPage> with TickerProviderStateMixin {
                   )),
             ),
             SizedBox(
-              height: height / 8,
+              height: height / 14,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  height: 40,
+                  child: Image.asset(
+                      "images/award.png",),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(myInt.toString() == null ? "0" : myInt.toString() ,style: GoogleFonts.adventPro(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                )),
+              ],
+            ),
+            SizedBox(
+              height: height / 20,
             ),
             customButton("1 player", Colors.green, () {
-              Navigator.of(context).push(MaterialPageRoute(
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (_) => OnePlayerPage(),
               ));
             }),
@@ -106,7 +143,7 @@ class _MenuPageState extends State<MenuPage> with TickerProviderStateMixin {
               height: height / 20,
             ),
             customButton("2 player", Colors.red, () {
-              Navigator.of(context).push(MaterialPageRoute(
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (_) => TwoPlayerPage(),
               ));
             }),
