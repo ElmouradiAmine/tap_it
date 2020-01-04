@@ -1,6 +1,22 @@
 # tap_it
 
-A simple tap game.
+This is a simple tap game where you can play by your self or with another player. The goal is to tap as fast as you can before
+the time out ! Enjoy.
+
+# My experience
+This project took me a whole week with 10 hours of work.
+First of all I created the squeleton of the app then I tried to add the design
+(Pokemon Theme )
+Always striving to be better !
+
+# Screenshots
+<p align="center">
+  <img src="./sc1.jpeg" width="250">
+  &nbsp
+  <img src="./sc2.jpeg" width="250">
+  &nbsp
+  <img src="./sc3.jpeg" width="250">
+</p>
 
 ## Getting Started
 
