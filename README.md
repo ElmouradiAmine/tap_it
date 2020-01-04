@@ -17,11 +17,11 @@ Always striving to be better !
 
 # Screenshots
 <p align="center">
-  <img src="./sc1.jpeg" width="250">
+  <img src="./sc3.jpeg" width="250">
   &nbsp
   <img src="./sc2.jpeg" width="250">
   &nbsp
-  <img src="./sc3.jpeg" width="250">
+  <img src="./sc1.jpeg" width="250">
 </p>
 
 ## Getting Started
