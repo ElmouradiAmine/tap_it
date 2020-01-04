@@ -9,6 +9,12 @@ First of all I created the squeleton of the app then I tried to add the design
 (Pokemon Theme )
 Always striving to be better !
 
+# Functionnalities
+- A local highscore system.
+- Two modes : Solo player and Two player mode.
+- Smooth Animations.
+- Cute design. hihihi
+
 # Screenshots
 <p align="center">
   <img src="./sc1.jpeg" width="250">
